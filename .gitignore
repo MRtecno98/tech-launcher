@@ -1,0 +1,15 @@
+
+/.metadata/
+/.recommenders/
+techlauncher/target/
+
+techlauncher/files/
+techlauncher/doc/
+techlauncher/.settings/
+techlauncher/.classpath
+techlauncher/.project
+techlauncherUpdater/target/
+
+techlauncherUpdater/.settings/
+techlauncherUpdater/.project
+techlauncherUpdater/.classpath
