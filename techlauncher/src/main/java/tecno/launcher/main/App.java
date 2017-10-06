@@ -57,15 +57,13 @@ public class App
 		version.deleteUpdaterIfPresent();
 		version.updateVersionIfOutdated();
 		
-        EventQueue.invokeLater(new Runnable() {
-			public void run() {
+        EventQueue.invokeLater(() -> {
 				try {
 					frame = new MainFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
 		});
     }
 	
