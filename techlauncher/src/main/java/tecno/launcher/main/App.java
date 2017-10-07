@@ -83,14 +83,11 @@ public class App
 		File file = new File(datafolder + "\\options.json");
 		BufferedWriter writer = null;
 		try {
-			if(file.exists()) {
-				writer = new BufferedWriter(new FileWriter(file));
-				writer.write(out.toString());
-			}else{
+			if(!(file.exists())) {
 				file.createNewFile();
-				writer = new BufferedWriter(new FileWriter(file));
-				writer.write(out.toString());
 			}
+			writer = new BufferedWriter(new FileWriter(file));
+			writer.write(out.toString());
 		}catch (IOException e){
 			e.printStackTrace();
 		}finally {
@@ -131,6 +128,8 @@ public class App
         	options.put("maxRAM", "1024");
         	options.put("version", settings.version);
         	options.put("forceupdate", "true");
+        	options.put("username", null);
+        	options.put("password", null);
 		}
 		
 		

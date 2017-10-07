@@ -48,7 +48,7 @@ public class MainFrame extends JFrame {
 	private App inst;
 	
 	/** The package manager */
-	PackageManager manager;
+	private PackageManager manager;
 	
 	/**
 	 * Construct the frame,
@@ -75,6 +75,7 @@ public class MainFrame extends JFrame {
 		inst.loadOptions();
 		
 		System.out.println("Loaded options: minRAM: " + inst.options.get("minRAM") + " maxRAM: " + inst.options.get("maxRAM"));
+		System.out.println("Loaded username: " + inst.options.get("username"));
 		
 		setTitle("TechLauncher");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,20 +95,6 @@ public class MainFrame extends JFrame {
 		buttonsPane.add(btnOptions);
 		
 		JButton btnForceUpdate = new JButton("Force Update");
-		btnForceUpdate.addMouseListener(new MouseAdapter() {
-			/**
-			 * Invoked when the mouse was clicked on 'Force Update' Button
-			 * Set the property 'Force Update' at True, at first start of the application by default is True
-			 * After the downloading of the pack is False
-			 * @param event a MouseEvent represent the event listened
-			 */
-			@Override
-			public void mouseClicked(MouseEvent event) {
-				inst.options.put("forceupdate", "true");
-				MsgFrame msg = new MsgFrame("    	Al prossimo avvio del gioco\n    	Il pacchetto sarà aggiornato","Force Update");
-				msg.setVisible(true);
-			}
-		});
 		btnForceUpdate.setBounds(10, 32, 117, 23);
 		buttonsPane.add(btnForceUpdate);
 		
@@ -115,6 +102,9 @@ public class MainFrame extends JFrame {
 		usrField.setBounds(361, 14, 140, 20);
 		buttonsPane.add(usrField);
 		usrField.setColumns(10);
+		if(inst.options.get("username") != null) {
+			usrField.setText(inst.options.get("username"));
+		}
 		
 		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
@@ -129,6 +119,9 @@ public class MainFrame extends JFrame {
 		pswField = new JPasswordField();
 		pswField.setBounds(361, 35, 140, 20);
 		buttonsPane.add(pswField);
+		if(inst.options.get("password") != null) {
+			pswField.setText(inst.options.get("password"));
+		}
 		
 		JButton btnPlay = new JButton("Play");
 		btnPlay.setBounds(511, 11, 69, 44);
@@ -146,11 +139,26 @@ public class MainFrame extends JFrame {
 			  browser.setPage("http://mcupdate.tumblr.com");
 			}catch (IOException e) {
 			  browser.setContentType("text/html");
-			  browser.setText("<html>Could not load</html>");
+			  browser.setText("<html>Could not load:<br>" + e.getMessage() + "</html>");
 			}
 		//JScrollPane scroll = new JScrollPane(browser);
 		//scroll.setBounds(0, 267, 590, -268);
 		contentPane.add(browser);
+		
+		btnForceUpdate.addMouseListener(new MouseAdapter() {
+			/**
+			 * Invoked when the mouse was clicked on 'Force Update' Button
+			 * Set the property 'Force Update' at True, at first start of the application by default is True
+			 * After the downloading of the pack is False
+			 * @param event a MouseEvent represent the event listened
+			 */
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				inst.options.put("forceupdate", "true");
+				MsgFrame msg = new MsgFrame("    	Al prossimo avvio del gioco\n    	Il pacchetto sarà aggiornato","Force Update");
+				msg.setVisible(true);
+			}
+		});
 		
 		btnOptions.addMouseListener(new MouseAdapter() {
 			/**
@@ -180,6 +188,9 @@ public class MainFrame extends JFrame {
 			public void mouseClicked(MouseEvent event) {
 				String username = usrField.getText();
 				String password = new String(pswField.getPassword());
+				
+				inst.options.put("username", username);
+				inst.options.put("password", password);
 				
 				AuthManager auth = new AuthManager(username , password);
 				

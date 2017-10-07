@@ -18,5 +18,5 @@ public class Settings {
 	/** Name of Data Folder in APPDATA(Without '.') */
 	public static String folderName = "techpack";
 	/** Local Version of the launcher */
-	public static String version = "1.0.0";
+	public static String version = "1.1.1";
 }
