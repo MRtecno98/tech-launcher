@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 
 import tecno.launcher.main.App;
 import tecno.launcher.managers.AuthManager;
+import tecno.launcher.managers.OptionsManager;
 import tecno.launcher.packager.PackageManager;
 
 /**
@@ -50,6 +51,8 @@ public class MainFrame extends JFrame {
 	/** The package manager */
 	private PackageManager manager;
 	
+	private OptionsManager optmanager;
+	
 	/**
 	 * Construct the frame,
 	 * instantiate fields 'inst' and 'manager',
@@ -73,6 +76,8 @@ public class MainFrame extends JFrame {
 		}
 		
 		inst.loadOptions();
+		
+		optmanager = new OptionsManager(Integer.parseInt(inst.options.get("minRAM")) , Integer.parseInt(inst.options.get("maxRAM")));
 		
 		System.out.println("Loaded options: minRAM: " + inst.options.get("minRAM") + " maxRAM: " + inst.options.get("maxRAM"));
 		System.out.println("Loaded username: " + inst.options.get("username"));
@@ -204,6 +209,13 @@ public class MainFrame extends JFrame {
 						manager.extractPack();
 						inst.options.put("forceupdate" , "false");
 					}
+					
+					try {
+						optmanager.exportOptions(inst.launcherOptions);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
 					manager.launchPack();
 				}else{
 					String[] textErr = {"Username o password non validi"};

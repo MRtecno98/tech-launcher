@@ -44,6 +44,8 @@ public class App
 	public static HashMap<String,String> options = new HashMap<String,String>();
 	/** Mojang Autentication Server */
 	public static String autentication = "https://authserver.mojang.com/authenticate";
+	
+	public static File launcherOptions = new File(datafolder + "\\pack\\.minecraft\\launcher_profiles.json");
 	/** The MainFrame */
 	public static MainFrame frame;
 	
