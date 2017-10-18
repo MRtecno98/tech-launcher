@@ -14,6 +14,7 @@ import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
 
 import tecno.launcher.main.App;
+import tecno.launcher.objects.labels.JLabelLink;
 
 /**
  * This class is the Options Frame used by user for edit options
@@ -39,7 +40,7 @@ public class OptionsFrame extends JFrame {
 		setResizable(false);
 		setTitle("Options");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 175, 165);
+		setBounds(100, 100, 448, 275);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -47,25 +48,45 @@ public class OptionsFrame extends JFrame {
 		
 		JLabel lblMinRam = new JLabel("Min RAM");
 		lblMinRam.setFont(new Font("Arial", Font.PLAIN, 17));
-		lblMinRam.setBounds(10, 18, 77, 27);
+		lblMinRam.setBounds(239, 18, 77, 27);
 		contentPane.add(lblMinRam);
 		
 		JLabel lblMaxRam = new JLabel("Max RAM");
 		lblMaxRam.setFont(new Font("Arial", Font.PLAIN, 17));
-		lblMaxRam.setBounds(10, 61, 77, 27);
+		lblMaxRam.setBounds(239, 61, 77, 27);
 		contentPane.add(lblMaxRam);
 		
 		final JSpinner minRAM = new JSpinner();
-		minRAM.setBounds(94, 21, 60, 20);
+		minRAM.setBounds(326, 21, 106, 24);
 		contentPane.add(minRAM);
 		
 		final JSpinner maxRAM = new JSpinner();
-		maxRAM.setBounds(94, 64, 60, 20);
+		maxRAM.setBounds(326, 64, 106, 24);
 		contentPane.add(maxRAM);
 		
 		JButton btnSave = new JButton("Save");
-		btnSave.setBounds(39, 99, 89, 23);
+		btnSave.setBounds(343, 205, 89, 30);
 		contentPane.add(btnSave);
+		
+		JLabel lblForceUpdate = new JLabel("Force Update:");
+		lblForceUpdate.setFont(new Font("Arial", Font.PLAIN, 13));
+		lblForceUpdate.setBounds(49, 114, 89, 20);
+		contentPane.add(lblForceUpdate);
+		
+		JButton btnForceUpdate = new JButton("Force Update");
+		btnForceUpdate.setBounds(149, 114, 283, 25);
+		contentPane.add(btnForceUpdate);
+		
+		JLabelLink folder = new JLabelLink();
+		folder.setLocation(149, 149);
+		folder.setSize(283, 15);
+		folder.setText(MainFrame.getInst().datafolder);
+		contentPane.add(folder);
+		
+		JLabel lblCartellaDiServer = new JLabel("Cartella di SERVER:");
+		lblCartellaDiServer.setFont(new Font("Arial", Font.PLAIN, 13));
+		lblCartellaDiServer.setBounds(10, 145, 123, 20);
+		contentPane.add(lblCartellaDiServer);
 		
 		btnSave.addMouseListener(new MouseAdapter() {
 			/**
@@ -104,6 +125,15 @@ public class OptionsFrame extends JFrame {
 			public void windowActivated(WindowEvent e) {
 				minRAM.setValue(Integer.parseInt(App.options.get("minRAM")));
 				maxRAM.setValue(Integer.parseInt(App.options.get("maxRAM")));
+			}
+		});
+		
+		btnForceUpdate.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				MainFrame.getInst().options.put("forceupdate", "true");
+				btnForceUpdate.setText("Ok");
+				btnForceUpdate.setEnabled(false);
 			}
 		});
 	}

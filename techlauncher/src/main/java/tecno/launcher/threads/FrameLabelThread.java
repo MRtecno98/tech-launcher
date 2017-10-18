@@ -25,7 +25,7 @@ public class FrameLabelThread extends Thread {
 	 * Start the animation Thread
 	 */
 	public void run() {
-		running = true;
+		frame.setVisible(true);
 		try {
 			while(running) {
 				frame.lblDownloading.setText("Downloading");
@@ -41,6 +41,8 @@ public class FrameLabelThread extends Thread {
 			sleep(3000);
 		}catch(InterruptedException e){
 			e.printStackTrace();
+		}finally{
+			frame.setVisible(false);
 		}
 	}
 	

@@ -4,9 +4,12 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import tecno.launcher.objects.misc.JBounds;
 
 /**
  * This class is a JPanel contains Image
@@ -22,6 +25,8 @@ public class ImagePanel extends JPanel {
     int width;
     /** The height of Image */
     int height;
+    int x;
+    int y;
     
     /**
      * Construct the frame and resize the image at indicated misures
@@ -29,15 +34,30 @@ public class ImagePanel extends JPanel {
      * @param width The width of image In-Frame
      * @param height The height of Image In-Frame
      */
-    public ImagePanel(String path , int width, int height) {
+    public ImagePanel(String path , JBounds bounds) {
        try {                
           image = ImageIO.read(new File(path));
        } catch (IOException ex) {
             ex.printStackTrace();
        }
        
-       this.width = width;
-       this.height = height;
+       this.width = bounds.getWidth();
+       this.height = bounds.getHeight();
+       this.x = bounds.getX();
+       this.y = bounds.getY();
+    }
+    
+    public ImagePanel(URL url , JBounds bounds) {
+    	try {                
+            image = ImageIO.read(url);
+         } catch (IOException ex) {
+              ex.printStackTrace();
+         }
+         
+         this.width = bounds.getWidth();
+         this.height = bounds.getHeight();
+         this.x = bounds.getX();
+         this.y = bounds.getY();
     }
     
     /**
@@ -47,7 +67,7 @@ public class ImagePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(image, 0, 0, width, height, this);            
+        g.drawImage(image, x, y, width, height, this);            
     }
 
 }

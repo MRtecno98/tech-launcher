@@ -18,6 +18,9 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -29,7 +32,7 @@ public class App
 {
 	
 	/** If true show 'Debug' button */
-	public static boolean debug = false;
+	public static boolean debug = true;
 	/** Settings Class instance */
 	public static Settings settings = new Settings();
 	/** The APPDATA folder */
@@ -46,6 +49,9 @@ public class App
 	public static String autentication = "https://authserver.mojang.com/authenticate";
 	
 	public static File launcherOptions = new File(datafolder + "\\pack\\.minecraft\\launcher_profiles.json");
+	
+	public static App mainInstance;
+	
 	/** The MainFrame */
 	public static MainFrame frame;
 	
@@ -55,13 +61,27 @@ public class App
 	 */
 	public static void main(String[] args) {
 		
+		mainInstance = new App();
+		
 		VersionManager version = new VersionManager();
 		version.deleteUpdaterIfPresent();
 		version.updateVersionIfOutdated();
 		
+		try {
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (Exception e) {
+			// If Nimbus is not available, you can set the GUI to another look and feel.
+			System.out.println("Nimbus not Avaiable!");
+		}
+		
         EventQueue.invokeLater(() -> {
 				try {
-					frame = new MainFrame();
+					frame = new MainFrame(mainInstance);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

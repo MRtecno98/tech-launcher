@@ -3,6 +3,8 @@ package techlauncher.updater.frame;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -10,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import techlauncher.updater.Updater;
 import techlauncher.updater.objs.ImagePanel;
 
 @SuppressWarnings("serial")
@@ -27,8 +30,13 @@ public class UpdaterFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		ImagePanel panel = new ImagePanel(UpdaterFrame.class.getClassLoader().getResource("techlauncher/updater/resources/updater.png").getFile(), 100,100);
-		panel.setBounds(10, 15, 96, 103);
+		ImagePanel panel = null;
+		try {
+			panel = new ImagePanel(new URL(Updater.imgurl), 100,100);
+			panel.setBounds(10, 15, 96, 103);
+		} catch (MalformedURLException e1) {
+			System.out.println("updateImg not valid");
+		}
 		getContentPane().add(panel);
 		
 		lblUpdatingLauncher.setFont(new Font("Segoe UI Black", Font.PLAIN, 25));

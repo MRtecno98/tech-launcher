@@ -2,11 +2,13 @@ package tecno.launcher.threads;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
 
 import tecno.launcher.frame.DownloadFrame;
+import tecno.launcher.main.App;
 
 /**
  * This class represent the main Download Thread
@@ -15,22 +17,23 @@ import tecno.launcher.frame.DownloadFrame;
  */
 public class DownThread extends Thread {
 	/** Graphical Download Frame */
-	public DownloadFrame downframe;
+	public FrameLabelThread lblT;
 	/** URL of the file to download */
 	public URL url;
 	/** File Represent Destination */
 	public File destination;
+	public App inst;
 	
 	/**
 	 * Create the Thread using File and URL
 	 * @param f File object represent destination
 	 * @param u URL of the file to download
 	 */
-	public DownThread(File f , URL u) {
-		this.downframe = new DownloadFrame();
-		downframe.setVisible(true);
+	public DownThread(App inst , File f , URL u , FrameLabelThread lblT) {
 		this.destination = f;
 		this.url = u;
+		this.inst = inst;
+		this.lblT = lblT;
 	}
 	
 	/**
@@ -39,14 +42,14 @@ public class DownThread extends Thread {
 	 * Start Downloading
 	 */
 	public void run() {
-		FrameLabelThread lblT = new FrameLabelThread(downframe);
+		lblT.setRunning(true);
 		lblT.start();
+		//lblT.frame.setVisible(true);
 		try {
 	        FileUtils.copyURLToFile(url, destination, 20000, 20000);
 	    }catch (IOException ex){
 	        ex.printStackTrace();
 	    }
 		lblT.setRunning(false);
-		downframe.setVisible(false);
 	}
 }

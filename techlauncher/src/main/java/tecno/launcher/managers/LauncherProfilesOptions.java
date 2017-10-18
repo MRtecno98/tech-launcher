@@ -5,13 +5,16 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 import org.json.JSONObject;
 
-public class OptionsManager {
+public class LauncherProfilesOptions {
 	int minRAM;
 	int maxRAM;
 	
@@ -19,7 +22,7 @@ public class OptionsManager {
 	 * @param minRAM
 	 * @param maxRAM
 	 */
-	public OptionsManager(int minRAM, int maxRAM) {
+	public LauncherProfilesOptions(int minRAM, int maxRAM) {
 		super();
 		this.minRAM = minRAM;
 		this.maxRAM = maxRAM;
@@ -53,6 +56,7 @@ public class OptionsManager {
 		this.maxRAM = maxRAM;
 	}
 	
+	@Deprecated
 	public void exportOptions(File f) throws IOException {
 		BufferedReader reader = null;
 		String text = "";
@@ -76,6 +80,54 @@ public class OptionsManager {
 			writer.write(obj.toString());
 		}finally {
 			writer.close();
+		}
+	}
+	
+	public void correctProfilesJSON(File f) {
+		if((!(f.exists())) || f.isDirectory()) {
+			System.out.println("Invalid path");
+			return;
+		}
+		
+		BufferedReader reader = null;
+		String line;
+		ArrayList<String> text = new ArrayList<>();
+		try {
+			reader = new BufferedReader(new FileReader(f));
+			while((line = reader.readLine()) != null) {
+				text.add(line);
+			}
+		}catch(IOException e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		for(String s : text) {
+			if(s.startsWith("  \"selectedProfile\": ")) {
+				text.set(text.indexOf(s), "  \"selectedProfile\": \"profile\",");
+			}
+		}
+		
+		BufferedWriter writer = null;
+		try {
+			writer = new BufferedWriter(new FileWriter(f));
+			for(String s : text) {
+				writer.write(s + "\n");
+			}
+		}catch(IOException e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				writer.flush();
+				writer.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

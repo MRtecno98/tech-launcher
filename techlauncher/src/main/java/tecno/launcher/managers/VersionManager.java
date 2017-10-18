@@ -10,6 +10,7 @@ import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
 
+import tecno.launcher.frame.MainFrame;
 import tecno.launcher.main.App;
 import tecno.launcher.settings.Settings;
 

@@ -1,5 +1,9 @@
 package tecno.launcher.frame;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URL;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -7,9 +11,9 @@ import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import tecno.launcher.main.App;
+import tecno.launcher.objects.misc.JBounds;
 import tecno.launcher.objects.panels.ImagePanel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  * This class is the frame used to report at user any error.
@@ -23,6 +27,8 @@ public class ErrorFrame extends JFrame {
 	/** The main pane of JFrame */
 	private JPanel contentPane;
 	
+	private App inst;
+	
 	/**
 	 * Construct frame using text and title and instantiate the listeners
 	 * @param text The text of message shown in the frame
@@ -30,6 +36,8 @@ public class ErrorFrame extends JFrame {
 	 * @throws Exception If text is longer than four lines
 	 */
 	public ErrorFrame(String[] text , String title) throws Exception {
+		inst = MainFrame.getInst();
+		
 		if(text.length > 4) {
 			throw new Exception("Error Text is max 4 lines length");
 		}
@@ -41,7 +49,7 @@ public class ErrorFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		ImagePanel errImg = new ImagePanel(DownloadFrame.class.getClassLoader().getResource("tecno/launcher/resources/error.png").getFile(), 70, 70);
+		ImagePanel errImg = new ImagePanel(new URL(inst.settings.errorImg), new JBounds(70, 70));
 		errImg.setBounds(10 , 10 , 70 , 70);
 		contentPane.add(errImg);
 		

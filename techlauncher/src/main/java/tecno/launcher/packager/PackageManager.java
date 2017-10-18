@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import tecno.launcher.frame.DownloadFrame;
 import tecno.launcher.main.App;
 import tecno.launcher.threads.DownThread;
+import tecno.launcher.threads.FrameLabelThread;
 import tecno.launcher.zip.UnzipFile;
 
 /**
@@ -31,11 +33,11 @@ public class PackageManager extends Thread{
 	 * @param file Local Pack File
 	 * @throws MalformedURLException If URL is Malformed
 	 */
-	public PackageManager(URL URl , File file) throws MalformedURLException {
+	public PackageManager(App inst , URL URl , File file) throws MalformedURLException {
 		this.packURL = URl.toString();
 		this.URL = URl;
 		this.file = file;
-		this.inst = new App();
+		this.inst = inst;
 	}
 	
 	/**
@@ -59,10 +61,11 @@ public class PackageManager extends Thread{
 	/**
 	 * Start Download Thread
 	 * @return t The DownThread Class represent Download Thread
+	 * @throws MalformedURLException 
 	 */
-	public Thread updatePack() {
+	public Thread updatePack() throws MalformedURLException {
 		System.out.println("Updating pack...");
-		DownThread t = new DownThread(file , URL);
+		DownThread t = new DownThread(inst , file , URL , new FrameLabelThread(new DownloadFrame(inst)));
 		t.start();
 		return t;
     }
@@ -71,7 +74,11 @@ public class PackageManager extends Thread{
 	 * Run thread
 	 */
 	public void run() {
-		updatePack();
+		try {
+			updatePack();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
